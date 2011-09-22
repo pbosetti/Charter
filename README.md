@@ -19,3 +19,11 @@ The *allowed commands* are:
 5. `NAMES` or `names` followed by a set of `n` strings, where `n` is the number of series, sets the labels in the chart legend (i.e. the names of the series). Note that Charter must receive at least one valid data message before it can successfully set the series names.
 
 The Charter application resets the chart every time it gets a message corresponding to a data structure different by the last one, for example a different number of series, or a `s` message after a `m` message.
+
+Client libraries
+----------------
+
+Currently, the following libraries are available:
+
+1. Ruby
+2. C
