@@ -14,17 +14,17 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h> 
+#include <string.h>
 
 unsigned int charter_deliver_message(struct charter_s *ch, char *msg)
 {
-  int BASE_PORT = 2000;
-  printf("host: %s, id: %d, msg: %s\n", ch->hostname, BASE_PORT + ch->id, msg);
+//  printf("host: %s, id: %d, msg: %s\n", ch->hostname, BASE_UDP_PORT + ch->id, msg);
   int sockfd, portno; 
   ssize_t n;
   struct sockaddr_in serv_addr;
   struct hostent *server;
   
-  portno = BASE_PORT + ch->id;
+  portno = BASE_UDP_PORT + ch->id;
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   if (sockfd < 0) 
     return 1;
@@ -61,5 +61,30 @@ unsigned int charter_close(struct charter_s *ch)
 
 unsigned int charter_names(struct charter_s *ch, char **names, unsigned int count)
 {
-  return charter_deliver_message(ch, "CLEAR");
+  unsigned int i;
+  char msg[sizeof(names) + 6 + count];
+  bzero(msg, sizeof(msg));
+  strcat(msg, "NAMES ");
+  for (i = 0; i < count; i++) {
+    strcat(msg, names[i]);
+    strcat(msg, " ");
+  }
+  return charter_deliver_message(ch, msg);
 }
+
+unsigned int charter_sary(struct charter_s *ch, double *ary, unsigned int count)
+{
+  unsigned int i;
+  char msg[20 * count + 2];
+  bzero(msg, sizeof(msg));
+  char field[20];
+  strcat(msg, "s ");
+  for (i = 0; i < count; i++) {
+    sprintf(field, "%f ", ary[i]);
+    strcat(msg, field);
+  }
+  return charter_deliver_message(ch, msg);
+}
+
+
+
