@@ -7,16 +7,17 @@
 //
 
 #include "charter_client.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h> 
-#include <string.h>
 
-unsigned int charter_deliver_message(struct charter_s *ch, char *msg)
+void 
+charter_init(struct charter_s *ch)
+{
+  ch->id = 1;
+  ch->hostname = "127.0.0.1";
+  ch->delay = CHARTER_DEFAULT_DELAY;
+}
+
+enum charter_errors 
+charter_deliver_message(const struct charter_s *ch, char *msg)
 {
 //  printf("host: %s, id: %d, msg: %s\n", ch->hostname, BASE_UDP_PORT + ch->id, msg);
   int sockfd, portno; 
@@ -24,14 +25,14 @@ unsigned int charter_deliver_message(struct charter_s *ch, char *msg)
   struct sockaddr_in serv_addr;
   struct hostent *server;
   
-  portno = BASE_UDP_PORT + ch->id;
+  portno = CHARTER_BASE_UDP_PORT + ch->id;
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   if (sockfd < 0) 
-    return 1;
+    return SOCKET_ERR;
   
   server = gethostbyname(ch->hostname);
   if (server == NULL)
-    return 2;
+    return SERVER_ERR;
   
   bzero((char *) &serv_addr, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
@@ -39,32 +40,39 @@ unsigned int charter_deliver_message(struct charter_s *ch, char *msg)
         (char *)&serv_addr.sin_addr.s_addr,
         server->h_length);
   serv_addr.sin_port = htons(portno);
-  if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-    return 3;
-  }
+  if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
+    return CONN_ERR;
+  
   n = write(sockfd, msg, strlen(msg));
   if (n < 0) 
-    return 4;
+    return WRITE_ERR;
+  
   close(sockfd);
+  if (ch->delay > 0)
+    usleep(ch->delay);
   return 0;
 }
 
-unsigned int charter_clear(struct charter_s *ch)
+enum charter_errors 
+charter_clear(const struct charter_s *ch)
 {
   return charter_deliver_message(ch, "CLEAR");
 }
 
-unsigned int charter_close(struct charter_s *ch)
+enum charter_errors 
+charter_close(const struct charter_s *ch)
 {
   return charter_deliver_message(ch, "CLOSE");
 }
 
-unsigned int charter_names(struct charter_s *ch, char **names, unsigned int count)
+enum charter_errors 
+charter_names(const struct charter_s *ch, char **names, const unsigned int count)
 {
+  char *header = "NAMES ";
   unsigned int i;
-  char msg[sizeof(names) + 6 + count];
+  char msg[sizeof(header) + sizeof(names) + count];
   bzero(msg, sizeof(msg));
-  strcat(msg, "NAMES ");
+  strcat(msg, header);
   for (i = 0; i < count; i++) {
     strcat(msg, names[i]);
     strcat(msg, " ");
@@ -72,13 +80,15 @@ unsigned int charter_names(struct charter_s *ch, char **names, unsigned int coun
   return charter_deliver_message(ch, msg);
 }
 
-unsigned int charter_sary(struct charter_s *ch, double *ary, unsigned int count)
+enum charter_errors 
+charter_sary(const struct charter_s *ch, double *ary, const unsigned int count)
 {
+  char *header = "s ";
   unsigned int i;
-  char msg[20 * count + 2];
+  char msg[sizeof(header) + CHARTER_FLOAT_FIELD_SIZE * count];
   bzero(msg, sizeof(msg));
-  char field[20];
-  strcat(msg, "s ");
+  char field[CHARTER_FLOAT_FIELD_SIZE];
+  strcat(msg, header);
   for (i = 0; i < count; i++) {
     sprintf(field, "%f ", ary[i]);
     strcat(msg, field);
