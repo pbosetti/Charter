@@ -1,7 +1,7 @@
 CHARTER CLIENT LIBRARIES
 ========================
 
-Charter is a Mac OS X application available on the Mac App Store. Charter allows you make realtime charts on data sent to it via a simple UDP protocol. It is pretty easy to send UDP packets from almost every modern programming language with a decent socket library, so you would much probably be able to add a realtime charting functionality to your code.
+Charter is a Mac OS X application available on the [Mac App Store](http://t.co/6JKesQaV). Charter allows you make realtime charts on data sent to it via a simple UDP protocol. It is pretty easy to send UDP packets from almost every modern programming language with a decent socket library, so you would much probably be able to add a realtime charting functionality to your code.
 
 Here you will find a selection of client libraries (at the present time, only Ruby, but things will improve quickly), plus the protocol description, so to allow you to implement your own client.
 
