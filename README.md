@@ -5,7 +5,7 @@ Charter is a Mac OS X application available on the [Mac App Store](http://t.co/6
 
 Here you will find a selection of client libraries (at the present time: Ruby, C, and Arduino), plus the protocol description, so to allow you to implement your own client.
 
-**Would you happen to develop libraries for other language, share them! fork, edit and request a pull or - if you don't like GitHub - simply contact me at *p4010 at me dot com***
+**Would you happen to develop libraries for other language, share them! fork, edit and request a pull or - if you don't like GitHub - simply contact me: p4010 at me dot com**
 
 Protocol
 --------
