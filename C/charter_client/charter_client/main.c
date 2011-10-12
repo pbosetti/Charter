@@ -18,7 +18,7 @@ int main (int argc, const char * argv[])
   struct charter_s ch; // Declare the charter
   unsigned int i;
   double ary[3];
-  string names[2];
+  string names[2], labels[2];
   
   charter_init(&ch);  // Initialize defaukt values: ID = 1, host = localhost, delay = 10000 us
   ch.delay = 50000;   // Override default delay to 50000 us
@@ -33,7 +33,10 @@ int main (int argc, const char * argv[])
   
   names[0] = "Sin";
   names[1] = "Cos";
+  labels[0] = "Time";
+  labels[1] = "Value";
   charter_names(&ch, names, 2); // Set series names
+  charter_labels(&ch, labels, 2);
   
   //charter_close(&ch);         // If needed you can close the connection
   return 0;

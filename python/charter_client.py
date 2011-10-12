@@ -29,6 +29,8 @@ class Client:
         self.deliver('CLOSE')
     def names(self,Names):
         self.deliver('NAMES ' + Names)
+    def names(self,Labels):
+        self.deliver('NAMES ' + Labels)
 
     def deliver(self,Str):
         Host = socket.gethostbyname(self.host)

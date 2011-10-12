@@ -40,6 +40,8 @@ module Charter
 
     def names(ary); deliver("NAMES " + (ary * " ")); end
     
+    def labels(ary); deliver("LABELS " + (ary * " ")); end
+    
     def deliver(message)
       raise ArgumentError, "need a String, got #{message.class}" unless message.respond_to? :to_s
       UDPSocket.open.send(message.to_s, 0, @host, port)
@@ -56,5 +58,6 @@ if __FILE__ == $0
     ch << [i/10.0, Math::sin(i/10.0), 1.1*Math::cos(i/10.0), 0.7*Math::sin(i/10.0)+rand*0.05]
   end
   ch.names %w|speed velocity acceleration|
+  ch.labels %w|Time Value|
   #ch.close
 end

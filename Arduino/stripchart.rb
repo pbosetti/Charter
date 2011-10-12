@@ -186,7 +186,7 @@ if ($0 == __FILE__) then
   data = []
   yaml = ""
   start = Time.now.to_f
-
+  ch.labels %w|Time(s) Value|
   100.times do |i|
     yaml = ""
     ard.command('a', yaml) {|l| l + "\n"}

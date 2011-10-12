@@ -81,6 +81,22 @@ charter_names(const struct charter_s *ch, char **names, const unsigned int count
 }
 
 enum charter_errors 
+charter_labels(const struct charter_s *ch, char **labels, const unsigned int count)
+{
+  char *header = "LABELS ";
+  unsigned int i;
+  char msg[sizeof(header) + sizeof(labels) + count];
+  bzero(msg, sizeof(msg));
+  strcat(msg, header);
+  for (i = 0; i < count; i++) {
+    strcat(msg, labels[i]);
+    strcat(msg, " ");
+  }
+  return charter_deliver_message(ch, msg);
+}
+
+
+enum charter_errors 
 charter_sary(const struct charter_s *ch, double *ary, const unsigned int count)
 {
   char *header = "s ";

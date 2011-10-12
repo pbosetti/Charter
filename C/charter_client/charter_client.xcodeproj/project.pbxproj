@@ -92,6 +92,9 @@
 /* Begin PBXProject section */
 		8843A2D41429E3EE002987CC /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 8843A2D71429E3EE002987CC /* Build configuration list for PBXProject "charter_client" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

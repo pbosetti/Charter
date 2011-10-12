@@ -37,4 +37,5 @@ enum charter_errors charter_deliver_message(const struct charter_s *ch, char *ms
 enum charter_errors charter_clear(const struct charter_s *ch);
 enum charter_errors charter_close(const struct charter_s *ch);
 enum charter_errors charter_names(const struct charter_s *ch, char **names, const unsigned int count);
+enum charter_errors charter_labels(const struct charter_s *ch, char **labels, const unsigned int count);
 enum charter_errors charter_sary(const struct charter_s *ch, double *ary, const unsigned int count);
