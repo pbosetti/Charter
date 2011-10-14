@@ -31,3 +31,4 @@ Currently, the following libraries are available:
 2. **C**: almost complete but fully functional (one method missing)
 3. **Arduino**: complete (it reads analog input values from an attached Arduino and makes a stripchart)
 4. **Python**: complete
+5. **PHP**: complete
