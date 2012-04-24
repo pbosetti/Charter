@@ -1,4 +1,4 @@
-import os,sys,string,socket
+import socket
 import time
 
 class Chart(object):
@@ -24,13 +24,29 @@ class Chart(object):
         """
         self.data_points.append((x,y))
 
+    @property
+    def plot_list(self):
+        """
+        Seperate method for generating the list of plot actions so that users
+        can check it if they want before actualling calling the plot.  
+
+        Returns: list containing the plot language we plan to send over.  One
+                 entry per deliver() call.
+
+        Note: If this got expensive, it should probably be cached.  Then again,
+              if you're using these sample classes you probably don't care.
+        """
+        plot_list = map(lambda n: "m %s,%s" % n, self.data_points)
+        return plot_list
+
     def plot(self):
         """
         Call needed client functions to send chart data to Charter application
         """
-        plot_string = " ".join(map(lambda n: "%s,%s" % n, self.data_points))
-
-        self.deliver("m " + plot_string)
+        plot_list = self.plot_list
+        self.ch.names(self.name)
+        for entry in plot_list:
+            self.ch.deliver(entry)
 
 
 class Client:
