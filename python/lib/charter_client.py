@@ -5,8 +5,7 @@ class Chart(object):
 
     def __init__(self, name, ch=None):
         """
-        Receives:  data_points -- A list of DataPoint objects
-                   name -- The 'name' of the series
+        Receives:  name -- The 'name' of the series
                    ch(optional) -- an existing chart client object to talk to
         """
         if (ch == None):
